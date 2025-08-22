@@ -4,82 +4,27 @@ class FamilySyncApp {
         this.currentUser = null;
         this.currentFamily = null;
         this.currentPage = 'dashboard';
-        this.appData = null;
-        this.init();
-    }
+        init() {
+            // Show loading screen
+            this.showLoading();
 
-    async init() {
-        // Initialize app data with sample data
-            // Firebase configuration
-            var firebaseConfig = {
-                apiKey: "YOUR_API_KEY",
-                authDomain: "YOUR_AUTH_DOMAIN",
-                databaseURL: "YOUR_DATABASE_URL",
-                projectId: "YOUR_PROJECT_ID",
-                storageBucket: "YOUR_STORAGE_BUCKET",
-                messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-                appId: "YOUR_APP_ID"
-            };
-
-            // Initialize Firebase
-            if (typeof firebase !== 'undefined' && !firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
-            var db = (typeof firebase !== 'undefined') ? firebase.database() : null;
-
-            function displayFamily() {
-                var container = document.getElementById("family-list");
-                if (!db) {
-                    container.innerHTML = "Firebase not loaded.";
-                    return;
-                }
-                container.innerHTML = "Loading...";
-                db.ref("familyMembers").once("value").then(function(snapshot) {
-                    var members = snapshot.val();
-                    container.innerHTML = "";
-                    if (members) {
-                        Object.keys(members).forEach(function(key) {
-                            var member = members[key];
-                            var div = document.createElement("div");
-                            div.textContent = member.name + " (" + member.age + ")";
-                            container.appendChild(div);
-                        });
-                    } else {
-                        container.textContent = "No family members found.";
-                    }
+            // Set up event listeners after DOM is loaded
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    this.setupEventListeners();
+                    setTimeout(() => {
+                        this.hideLoading();
+                        this.showLogin();
+                    }, 1500);
                 });
-            }
-
-            window.onload = displayFamily;
-        
-        // Show loading screen
-        this.showLoading();
-        
-        // Set up event listeners after DOM is loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
+            } else {
                 this.setupEventListeners();
                 setTimeout(() => {
                     this.hideLoading();
                     this.showLogin();
                 }, 1500);
-            });
-        } else {
-            this.setupEventListeners();
-            setTimeout(() => {
-                this.hideLoading();
-                this.showLogin();
-            }, 1500);
+            }
         }
-    }
-
-            // Firebase configuration
-            const firebaseConfig = {
-                apiKey: "YOUR_API_KEY",
-                authDomain: "YOUR_AUTH_DOMAIN",
-                databaseURL: "YOUR_DATABASE_URL",
-                projectId: "YOUR_PROJECT_ID",
-                storageBucket: "YOUR_STORAGE_BUCKET",
                 messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
                 appId: "YOUR_APP_ID"
             };
@@ -333,31 +278,6 @@ if (typeof firebase !== 'undefined' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 var db = (typeof firebase !== 'undefined') ? firebase.database() : null;
-
-function displayFamily() {
-    var container = document.getElementById("family-list");
-    if (!db) {
-        container.innerHTML = "Firebase not loaded.";
-        return;
-    }
-    container.innerHTML = "Loading...";
-    db.ref("familyMembers").once("value").then(function(snapshot) {
-        var members = snapshot.val();
-        container.innerHTML = "";
-        if (members) {
-            Object.keys(members).forEach(function(key) {
-                var member = members[key];
-                var div = document.createElement("div");
-                div.textContent = member.name + " (" + member.age + ")";
-                container.appendChild(div);
-            });
-        } else {
-            container.textContent = "No family members found.";
-        }
-    });
-}
-
-window.onload = displayFamily;
         switch(this.currentPage) {
             case 'dashboard':
                 this.renderDashboard();
