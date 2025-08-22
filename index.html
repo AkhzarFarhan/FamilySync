@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FamilySync - Enterprise Chore Management</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#21808d">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">🏠</div>
+            <h2>FamilySync</h2>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Login/Landing Page -->
+    <div id="login-page" class="page login-page">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo">🏠</div>
+                <h1>FamilySync</h1>
+                <p>Enterprise Family Chore Management</p>
+            </div>
+            
+            <div class="login-forms">
+                <div class="login-tabs">
+                    <button class="tab-btn active" data-tab="signin">Sign In</button>
+                    <button class="tab-btn" data-tab="signup">Create Family</button>
+                    <button class="tab-btn" data-tab="join">Join Family</button>
+                </div>
+
+                <!-- Sign In Form -->
+                <form id="signin-form" class="login-form active">
+                    <div class="form-group">
+                        <label for="signin-email" class="form-label">Email</label>
+                        <input type="email" id="signin-email" class="form-control" value="sarah.smith@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="signin-password" class="form-label">Password</label>
+                        <input type="password" id="signin-password" class="form-control" value="password">
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Sign In</button>
+                </form>
+
+                <!-- Sign Up Form -->
+                <form id="signup-form" class="login-form">
+                    <div class="form-group">
+                        <label for="signup-name" class="form-label">Your Name</label>
+                        <input type="text" id="signup-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email" class="form-label">Email</label>
+                        <input type="email" id="signup-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password" class="form-label">Password</label>
+                        <input type="password" id="signup-password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="family-name" class="form-label">Family Name</label>
+                        <input type="text" id="family-name" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Create Family</button>
+                </form>
+
+                <!-- Join Family Form -->
+                <form id="join-form" class="login-form">
+                    <div class="form-group">
+                        <label for="join-name" class="form-label">Your Name</label>
+                        <input type="text" id="join-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="join-code" class="form-label">Family Code</label>
+                        <input type="text" id="join-code" class="form-control" placeholder="e.g., SMITH2025" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Join Family</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="app" class="app hidden">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1 class="app-title">FamilySync</h1>
+                    <div class="family-info">
+                        <span class="family-name" id="current-family-name">The Smith Family</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="notification-bell" id="notification-bell">
+                        <span class="notification-icon">🔔</span>
+                        <span class="notification-count" id="notification-count">3</span>
+                    </div>
+                    <div class="user-avatar" id="current-user-avatar">👩‍💼</div>
+                    <div class="user-points" id="current-user-points">890 pts</div>
+                    <button class="theme-toggle" id="theme-toggle">🌙</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="app-nav">
+            <button class="nav-btn active" data-page="dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">Dashboard</span>
+            </button>
+            <button class="nav-btn" data-page="chores">
+                <span class="nav-icon">✅</span>
+                <span class="nav-label">Chores</span>
+            </button>
+            <button class="nav-btn" data-page="posts">
+                <span class="nav-icon">💬</span>
+                <span class="nav-label">Posts</span>
+            </button>
+            <button class="nav-btn" data-page="family">
+                <span class="nav-icon">👨‍👩‍👧‍👦</span>
+                <span class="nav-label">Family</span>
+            </button>
+            <button class="nav-btn" data-page="profile">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label">Profile</span>
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <!-- Dashboard Page -->
+            <div id="dashboard-page" class="page-content active">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card stats-card">
+                        <h3>Family Stats</h3>
+                        <div class="stats-grid">
+                            <div class="stat">
+                                <div class="stat-value" id="total-members">5</div>
+                                <div class="stat-label">Members</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value" id="pending-chores">3</div>
+                                <div class="stat-label">Pending</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value" id="completed-today">2</div>
+                                <div class="stat-label">Completed Today</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value" id="total-points">2765</div>
+                                <div class="stat-label">Total Points</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card leaderboard-card">
+                        <h3>🏆 Family Leaderboard</h3>
+                        <div class="leaderboard" id="leaderboard">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card recent-activity-card">
+                        <h3>📋 Pending Chores</h3>
+                        <div class="pending-chores" id="dashboard-pending-chores">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card posts-preview-card">
+                        <h3>💬 Recent Posts</h3>
+                        <div class="posts-preview" id="dashboard-posts-preview">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chores Page -->
+            <div id="chores-page" class="page-content">
+                <div class="page-header">
+                    <h2>Chore Management</h2>
+                    <button class="btn btn--primary" id="create-chore-btn">+ Create Chore</button>
+                </div>
+
+                <div class="chores-filters">
+                    <select class="form-control" id="chore-filter-status">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                        <option value="overdue">Overdue</option>
+                    </select>
+                    <select class="form-control" id="chore-filter-assignee">
+                        <option value="all">All Members</option>
+                    </select>
+                    <select class="form-control" id="chore-filter-category">
+                        <option value="all">All Categories</option>
+                    </select>
+                </div>
+
+                <div class="chores-grid" id="chores-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Posts Page -->
+            <div id="posts-page" class="page-content">
+                <div class="page-header">
+                    <h2>Family Posts</h2>
+                    <button class="btn btn--primary" id="create-post-btn">+ New Post</button>
+                </div>
+
+                <div class="posts-feed" id="posts-feed">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Family Page -->
+            <div id="family-page" class="page-content">
+                <div class="page-header">
+                    <h2>Family Members</h2>
+                    <button class="btn btn--primary" id="add-member-btn">+ Add Member</button>
+                </div>
+
+                <div class="family-info-card card">
+                    <div class="card__body">
+                        <h3>Family Information</h3>
+                        <div class="family-details">
+                            <p><strong>Family Name:</strong> <span id="family-display-name">The Smith Family</span></p>
+                            <p><strong>Family Code:</strong> <span id="family-display-code">SMITH2025</span></p>
+                            <p><strong>Created:</strong> <span id="family-created-date">January 1, 2025</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="family-members-grid" id="family-members-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div id="profile-page" class="page-content">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profile-avatar">👩‍💼</div>
+                    <div class="profile-info">
+                        <h2 id="profile-name">Sarah Smith</h2>
+                        <p class="profile-role" id="profile-role">Family Head</p>
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <span class="profile-stat-value" id="profile-points">890</span>
+                                <span class="profile-stat-label">Points</span>
+                            </div>
+                            <div class="profile-stat">
+                                <span class="profile-stat-value" id="profile-rank">#1</span>
+                                <span class="profile-stat-label">Rank</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-content">
+                    <div class="profile-section">
+                        <h3>🏆 Achievements</h3>
+                        <div class="achievements-grid" id="achievements-grid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <h3>📊 Activity Summary</h3>
+                        <div class="activity-stats">
+                            <div class="activity-stat">
+                                <span class="activity-stat-label">Chores Completed</span>
+                                <span class="activity-stat-value" id="chores-completed">47</span>
+                            </div>
+                            <div class="activity-stat">
+                                <span class="activity-stat-label">Posts Created</span>
+                                <span class="activity-stat-value" id="posts-created">23</span>
+                            </div>
+                            <div class="activity-stat">
+                                <span class="activity-stat-label">Days Active</span>
+                                <span class="activity-stat-value" id="days-active">54</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <h3>⚙️ Settings</h3>
+                        <div class="settings-options">
+                            <div class="setting-option">
+                                <span>Dark Mode</span>
+                                <label class="toggle">
+                                    <input type="checkbox" id="dark-mode-toggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-option">
+                                <span>Push Notifications</span>
+                                <label class="toggle">
+                                    <input type="checkbox" id="notifications-toggle" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-option">
+                                <span>Email Reminders</span>
+                                <label class="toggle">
+                                    <input type="checkbox" id="email-toggle" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <button class="btn btn--outline logout-btn" id="logout-btn">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Create Chore Modal -->
+    <div id="create-chore-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Chore</h3>
+                <button class="modal-close" data-modal="create-chore-modal">&times;</button>
+            </div>
+            <form id="create-chore-form" class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Chore Title</label>
+                    <input type="text" class="form-control" id="chore-title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" id="chore-description" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Assign To</label>
+                        <select class="form-control" id="chore-assignee" required>
+                            <option value="">Select member...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select class="form-control" id="chore-category">
+                            <option value="Cleaning">Cleaning</option>
+                            <option value="Kitchen">Kitchen</option>
+                            <option value="Laundry">Laundry</option>
+                            <option value="Pet Care">Pet Care</option>
+                            <option value="Outdoor">Outdoor</option>
+                            <option value="Organization">Organization</option>
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Due Date</label>
+                        <input type="date" class="form-control" id="chore-due-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Priority</label>
+                        <select class="form-control" id="chore-priority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Points Reward</label>
+                        <input type="number" class="form-control" id="chore-points" min="5" max="100" value="25">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Penalty Points</label>
+                        <input type="number" class="form-control" id="chore-penalty" min="1" max="50" value="5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Estimated Time</label>
+                    <input type="text" class="form-control" id="chore-time" placeholder="e.g., 15 minutes">
+                </div>
+                <div class="form-group">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="chore-recurring">
+                        <span class="toggle-text">Recurring chore</span>
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn--outline" data-modal="create-chore-modal">Cancel</button>
+                    <button type="submit" class="btn btn--primary">Create Chore</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Post Modal -->
+    <div id="create-post-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Post</h3>
+                <button class="modal-close" data-modal="create-post-modal">&times;</button>
+            </div>
+            <form id="create-post-form" class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">What's on your mind?</label>
+                    <textarea class="form-control" id="post-content" rows="4" placeholder="Share something with your family..." required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn--outline" data-modal="create-post-modal">Cancel</button>
+                    <button type="submit" class="btn btn--primary">Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Member Modal -->
+    <div id="add-member-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Family Member</h3>
+                <button class="modal-close" data-modal="add-member-modal">&times;</button>
+            </div>
+            <form id="add-member-form" class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" id="member-name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <select class="form-control" id="member-role">
+                        <option value="Parent">Parent</option>
+                        <option value="Child">Child</option>
+                        <option value="Elder">Elder</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Age (optional)</label>
+                    <input type="number" class="form-control" id="member-age" min="1" max="120">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Avatar</label>
+                    <select class="form-control" id="member-avatar">
+                        <option value="👨">👨 Man</option>
+                        <option value="👩">👩 Woman</option>
+                        <option value="👦">👦 Boy</option>
+                        <option value="👧">👧 Girl</option>
+                        <option value="👴">👴 Elderly Man</option>
+                        <option value="👵">👵 Elderly Woman</option>
+                        <option value="👨‍💻">👨‍💻 Techie</option>
+                        <option value="👩‍💼">👩‍💼 Professional</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn--outline" data-modal="add-member-modal">Cancel</button>
+                    <button type="submit" class="btn btn--primary">Add Member</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notifications Panel -->
+    <div id="notifications-panel" class="notifications-panel hidden">
+        <div class="notifications-header">
+            <h3>Notifications</h3>
+            <button class="notifications-close" id="notifications-close">&times;</button>
+        </div>
+        <div class="notifications-list" id="notifications-list">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
