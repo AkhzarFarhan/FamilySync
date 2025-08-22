@@ -10,7 +10,47 @@ class FamilySyncApp {
 
     async init() {
         // Initialize app data with sample data
-        this.initializeAppData();
+            // Firebase configuration
+            var firebaseConfig = {
+                apiKey: "YOUR_API_KEY",
+                authDomain: "YOUR_AUTH_DOMAIN",
+                databaseURL: "YOUR_DATABASE_URL",
+                projectId: "YOUR_PROJECT_ID",
+                storageBucket: "YOUR_STORAGE_BUCKET",
+                messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+                appId: "YOUR_APP_ID"
+            };
+
+            // Initialize Firebase
+            if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            var db = (typeof firebase !== 'undefined') ? firebase.database() : null;
+
+            function displayFamily() {
+                var container = document.getElementById("family-list");
+                if (!db) {
+                    container.innerHTML = "Firebase not loaded.";
+                    return;
+                }
+                container.innerHTML = "Loading...";
+                db.ref("familyMembers").once("value").then(function(snapshot) {
+                    var members = snapshot.val();
+                    container.innerHTML = "";
+                    if (members) {
+                        Object.keys(members).forEach(function(key) {
+                            var member = members[key];
+                            var div = document.createElement("div");
+                            div.textContent = member.name + " (" + member.age + ")";
+                            container.appendChild(div);
+                        });
+                    } else {
+                        container.textContent = "No family members found.";
+                    }
+                });
+            }
+
+            window.onload = displayFamily;
         
         // Show loading screen
         this.showLoading();
@@ -33,258 +73,37 @@ class FamilySyncApp {
         }
     }
 
-    initializeAppData() {
-        // Initialize with sample data
-        this.appData = {
-            "sampleFamily": {
-                "familyCode": "SMITH2025",
-                "familyName": "The Smith Family",
-                "familyHead": {
-                    "id": "user1",
-                    "name": "Sarah Smith",
-                    "role": "Family Head",
-                    "avatar": "👩‍💼",
-                    "points": 890,
-                    "joinDate": "2025-01-01",
-                    "email": "sarah.smith@email.com"
-                },
-                "familyMembers": [
-                    {
-                        "id": "user2",
-                        "name": "Mike Smith",
-                        "role": "Parent",
-                        "avatar": "👨‍💻",
-                        "points": 750,
-                        "age": 35,
-                        "joinDate": "2025-01-01"
-                    },
-                    {
-                        "id": "user3",
-                        "name": "Emma Smith",
-                        "role": "Child",
-                        "avatar": "👧",
-                        "points": 420,
-                        "age": 12,
-                        "joinDate": "2025-01-02"
-                    },
-                    {
-                        "id": "user4",
-                        "name": "Alex Smith",
-                        "role": "Child",
-                        "avatar": "👦",
-                        "points": 385,
-                        "age": 9,
-                        "joinDate": "2025-01-02"
-                    },
-                    {
-                        "id": "user5",
-                        "name": "Grandma Betty",
-                        "role": "Elder",
-                        "avatar": "👵",
-                        "points": 320,
-                        "age": 68,
-                        "joinDate": "2025-01-15"
-                    }
-                ]
-            },
-            "sampleChores": [
-                {
-                    "id": "chore1",
-                    "title": "Take out the trash",
-                    "description": "Empty all trash bins and take bags to the curb",
-                    "assignedTo": "user3",
-                    "assignedBy": "user1",
-                    "category": "Cleaning",
-                    "points": 25,
-                    "penalty": 5,
-                    "dueDate": "2025-08-23",
-                    "status": "pending",
-                    "priority": "medium",
-                    "recurring": "weekly",
-                    "estimatedTime": "15 minutes"
-                },
-                {
-                    "id": "chore2",
-                    "title": "Load dishwasher",
-                    "description": "Load dirty dishes and start the dishwasher cycle",
-                    "assignedTo": "user4",
-                    "assignedBy": "user2",
-                    "category": "Kitchen",
-                    "points": 20,
-                    "penalty": 3,
-                    "dueDate": "2025-08-22",
-                    "status": "completed",
-                    "priority": "high",
-                    "completedDate": "2025-08-22",
-                    "estimatedTime": "10 minutes"
-                },
-                {
-                    "id": "chore3",
-                    "title": "Vacuum living room",
-                    "description": "Vacuum the entire living room and under furniture",
-                    "assignedTo": "user2",
-                    "assignedBy": "user1",
-                    "category": "Cleaning",
-                    "points": 35,
-                    "penalty": 8,
-                    "dueDate": "2025-08-24",
-                    "status": "in-progress",
-                    "priority": "medium",
-                    "estimatedTime": "25 minutes"
-                },
-                {
-                    "id": "chore4",
-                    "title": "Feed the cat",
-                    "description": "Give Whiskers breakfast and refill water bowl",
-                    "assignedTo": "user3",
-                    "assignedBy": "user1",
-                    "category": "Pet Care",
-                    "points": 15,
-                    "penalty": 5,
-                    "dueDate": "2025-08-22",
-                    "status": "overdue",
-                    "priority": "high",
-                    "estimatedTime": "5 minutes"
-                },
-                {
-                    "id": "chore5",
-                    "title": "Organize bookshelf",
-                    "description": "Sort books by size and category in the study",
-                    "assignedTo": "user5",
-                    "assignedBy": "user1",
-                    "category": "Organization",
-                    "points": 30,
-                    "penalty": 6,
-                    "dueDate": "2025-08-25",
-                    "status": "pending",
-                    "priority": "low",
-                    "estimatedTime": "30 minutes"
+            // Firebase configuration
+            const firebaseConfig = {
+                apiKey: "YOUR_API_KEY",
+                authDomain: "YOUR_AUTH_DOMAIN",
+                databaseURL: "YOUR_DATABASE_URL",
+                projectId: "YOUR_PROJECT_ID",
+                storageBucket: "YOUR_STORAGE_BUCKET",
+                messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+                appId: "YOUR_APP_ID"
+            };
+
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.database();
+
+            // Fetch family members from Firebase
+            const container = document.getElementById("family-list");
+            container.innerHTML = "Loading...";
+            db.ref("familyMembers").once("value").then(snapshot => {
+                const members = snapshot.val();
+                container.innerHTML = "";
+                if (members) {
+                    Object.values(members).forEach(member => {
+                        const div = document.createElement("div");
+                        div.textContent = `${member.name} (${member.age})`;
+                        container.appendChild(div);
+                    });
+                } else {
+                    container.textContent = "No family members found.";
                 }
-            ],
-            "samplePosts": [
-                {
-                    "id": "post1",
-                    "author": "user1",
-                    "content": "Great job everyone on completing this week's chores! Emma and Alex are really stepping up! 🌟",
-                    "timestamp": "2025-08-22T14:30:00Z",
-                    "likes": ["user2", "user3", "user4"],
-                    "mediaType": "text",
-                    "comments": [
-                        {
-                            "id": "comment1",
-                            "author": "user3",
-                            "content": "Thanks Mom! Can I get extra points for doing it early? 😊",
-                            "timestamp": "2025-08-22T14:35:00Z"
-                        },
-                        {
-                            "id": "comment2",
-                            "author": "user2",
-                            "content": "Proud of our kids! Family teamwork at its best! 💪",
-                            "timestamp": "2025-08-22T14:40:00Z"
-                        }
-                    ]
-                },
-                {
-                    "id": "post2",
-                    "author": "user3",
-                    "content": "Just finished organizing my room and found my lost book! Double win! 📚✨",
-                    "timestamp": "2025-08-22T16:15:00Z",
-                    "likes": ["user1", "user2", "user5"],
-                    "mediaType": "text",
-                    "comments": [
-                        {
-                            "id": "comment3",
-                            "author": "user5",
-                            "content": "That's wonderful dear! A tidy room leads to a tidy mind 🧠",
-                            "timestamp": "2025-08-22T16:20:00Z"
-                        }
-                    ]
-                },
-                {
-                    "id": "post3",
-                    "author": "user2",
-                    "content": "Weekend family movie night this Saturday! Everyone gets to pick one movie. 🍿🎬",
-                    "timestamp": "2025-08-22T18:45:00Z",
-                    "likes": ["user1", "user3", "user4", "user5"],
-                    "mediaType": "text",
-                    "comments": [
-                        {
-                            "id": "comment4",
-                            "author": "user4",
-                            "content": "Can we watch the new superhero movie?! 🦸‍♂️",
-                            "timestamp": "2025-08-22T18:50:00Z"
-                        }
-                    ]
-                }
-            ],
-            "choreCategories": [
-                "Cleaning",
-                "Kitchen",
-                "Laundry",
-                "Pet Care",
-                "Outdoor",
-                "Organization",
-                "Maintenance",
-                "Shopping",
-                "Other"
-            ],
-            "achievements": [
-                {
-                    "id": "early_bird",
-                    "name": "Early Bird",
-                    "description": "Complete 5 chores before deadline",
-                    "icon": "🐦",
-                    "points": 50
-                },
-                {
-                    "id": "week_warrior",
-                    "name": "Week Warrior",
-                    "description": "Complete all assigned chores in a week",
-                    "icon": "⚔️",
-                    "points": 100
-                },
-                {
-                    "id": "team_player",
-                    "name": "Team Player",
-                    "description": "Help other family members with their chores",
-                    "icon": "🤝",
-                    "points": 75
-                },
-                {
-                    "id": "point_collector",
-                    "name": "Point Collector",
-                    "description": "Earn 1000 points total",
-                    "icon": "💎",
-                    "points": 200
-                }
-            ],
-            "notifications": [
-                {
-                    "id": "notif1",
-                    "type": "chore_due",
-                    "message": "Reminder: 'Take out the trash' is due in 2 hours",
-                    "timestamp": "2025-08-22T20:00:00Z",
-                    "userId": "user1",
-                    "read": false
-                },
-                {
-                    "id": "notif2",
-                    "type": "points_earned",
-                    "message": "You earned 20 points for completing 'Load dishwasher'!",
-                    "timestamp": "2025-08-22T19:30:00Z",
-                    "userId": "user1",
-                    "read": false
-                },
-                {
-                    "id": "notif3",
-                    "type": "new_post",
-                    "message": "New family post from Mike Smith",
-                    "timestamp": "2025-08-22T14:30:00Z",
-                    "userId": "user1",
-                    "read": false
-                }
-            ]
-        };
+            });
     }
 
     setupEventListeners() {
@@ -498,7 +317,47 @@ class FamilySyncApp {
         this.renderCurrentPage();
     }
 
-    renderCurrentPage() {
+// Firebase configuration
+var firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    databaseURL: "YOUR_DATABASE_URL",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+var db = (typeof firebase !== 'undefined') ? firebase.database() : null;
+
+function displayFamily() {
+    var container = document.getElementById("family-list");
+    if (!db) {
+        container.innerHTML = "Firebase not loaded.";
+        return;
+    }
+    container.innerHTML = "Loading...";
+    db.ref("familyMembers").once("value").then(function(snapshot) {
+        var members = snapshot.val();
+        container.innerHTML = "";
+        if (members) {
+            Object.keys(members).forEach(function(key) {
+                var member = members[key];
+                var div = document.createElement("div");
+                div.textContent = member.name + " (" + member.age + ")";
+                container.appendChild(div);
+            });
+        } else {
+            container.textContent = "No family members found.";
+        }
+    });
+}
+
+window.onload = displayFamily;
         switch(this.currentPage) {
             case 'dashboard':
                 this.renderDashboard();
